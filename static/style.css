@@ -1,0 +1,13 @@
+h1 {
+    color: red;
+}
+ul{
+    font-size: 24px;
+}
+
+.nav ul{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+    gap: 40px;
+}

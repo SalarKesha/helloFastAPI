@@ -1,5 +1,10 @@
 h1 {
     color: red;
+    background-image: url("/static/icons/home.png");
+    background-repeat: no-repeat;
+    background-position: left;
+    background-size: 24px 24px;
+    padding-left: 40px;
 }
 ul{
     font-size: 24px;

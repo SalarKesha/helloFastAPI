@@ -5,6 +5,7 @@ from pydantic import BaseModel
 class BaseUser(BaseModel):
     username: str
     created_time: datetime | None = None
+    modified_time: datetime | None = None
 
 
 class UserCreate(BaseUser):
@@ -16,3 +17,4 @@ class User(BaseUser):
 
     class Config:
         orm_mode = True
+

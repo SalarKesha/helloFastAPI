@@ -5,6 +5,7 @@ from schemas import user as schemas
 from sqlalchemy.orm import Session
 from dependencies import get_db
 from dependencies import templates
+from typing import List
 
 router = APIRouter()
 
@@ -24,19 +25,19 @@ async def root(request: Request):
 
 
 # path parameters
-@router.get("/hello/{name}")
-async def say_hello(name: str):
-    return {"message": f"Hello {name}"}
+# @router.get("/hello/{name}")
+# async def say_hello(name: str):
+#     return {"message": f"Hello {name}"}
 
 
 # query parameters
-@router.get("/person/list")
-async def persons_list(sort: str = Query(choices=["name", "age"])):
-    return f"sort: {sort}"
+# @router.get("/person/list")
+# async def persons_list(sort: str = Query(choices=["name", "age"])):
+#     return f"sort: {sort}"
 
 
 @router.post("/user/add", status_code=status.HTTP_201_CREATED, response_model=schemas.User)
-async def create_person(user: schemas.UserCreate, db: Session = Depends(get_db)):
+async def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db_user = db.query(models.User).filter(models.User.username == user.username).first()
     if db_user:
         raise HTTPException(status_code=400, detail="username already exists!")
@@ -53,3 +54,19 @@ async def get_user(user_id: int, db: Session = Depends(get_db)):
     if not db_user:
         raise HTTPException(status_code=404, detail="username not found!")
     return db_user
+
+
+# @router.get("/users/{user_id}/update", status_code=status.HTTP_200_OK, response_model=schemas.User)
+# async def update_user(user_id: int, db: Session = Depends(get_db)):
+#     db_user = db.query(models.User).filter(models.User.id == user_id).first()
+#     if not db_user:
+#         raise HTTPException(status_code=404, detail="username not found!")
+#     db.
+#     return db_user
+
+
+@router.get("/users", status_code=status.HTTP_200_OK, response_model=List[schemas.User])
+def get_users(db: Session = Depends(get_db)):
+    db_users = db.query(models.User).all()
+    print(db_users)
+    return db_users
